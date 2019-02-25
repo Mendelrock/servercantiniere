@@ -1,0 +1,25 @@
+{
+  "name": "servercantiniere",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mendelrock/servercantiniere.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mendelrock/servercantiniere/issues"
+  },
+  "homepage": "https://github.com/Mendelrock/servercantiniere#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "firebase": "^5.8.4",
+    "firebase-admin": "^7.0.0"
+  }
+}
