@@ -1,89 +1,150 @@
-const express = require('express'); //import express 
-const firebase = require('firebase');
+const express = require('express');
 const bodyParser = require('body-parser');
+const db = require('./db/db');
 
 var app = express();
 
 app.use(bodyParser.json());
 
-var config = {
-    apiKey: "AIzaSyAlEY8SeknVa3eUbYj_TPew6h5Ar5W4aCs",
-    authDomain: "doom-f6237.firebaseapp.com",
-    databaseURL: "https://doom-f6237.firebaseio.com",
-    projectId: "doom-f6237",
-    storageBucket: "doom-f6237.appspot.com",
-    messagingSenderId: "1004943919465"
-};
-
-firebase.initializeApp(config);
-var user = firebase.auth().currentUser;
 
 app.get('/plat', function (req, res) {
 
 	console.log("HTTP Get Request");
-	var platReference = firebase.database().ref("/Users/");
-
-	platReference.on("value", 
-			  function(snapshot) {
-					console.log(snapshot.val());
-					res.json(snapshot.val());
-					userReference.off("value");
-					}, 
-			  function (errorObject) {
-					console.log("The read failed: " + errorObject.code);
-					res.send("The read failed: " + errorObject.code);
-			 });
+	
+	if(req.body.id){
+		console.log("GET ONE");
+		var id = req.body.id;
+		referencePath = "/Plats/"+id+"/";
+	} else {
+		console.log("GET ALL");
+		var referencePath = "/Plats/";
+	}
+	
+	db.get_data(referencePath, res);
 });
-
 
 app.put('/plat', function (req, res) {
 
 	console.log("HTTP Put Request");
 
-	var userName = req.body.UserName;
-	var name = req.body.Name;
-	var age = req.body.Age;
-
-	var referencePath = '/Users/'+userName+'/';
-	var userReference = firebase.database().ref(referencePath);
-	userReference.set({Name: name, Age: age}, 
-				 function(error) {
-					if (error) {
-						res.send("Data could not be saved." + error);
-					} 
-					else {
-						res.send("Data saved successfully.");
-					}
-			});
+	var id = req.body.id;
+	var referencePath = '/Plats/'+id+'/';
+	db.add_data(referencePath, req.body, res);
 });
 
-//Update existing instance
-app.post('/', function (req, res) {
+app.post('/plat', function (req, res) {
 
 	console.log("HTTP POST Request");
 	
-	var userName = req.body.UserName;
-	var name = req.body.Name;
-	var age = req.body.Age;
-
-	var referencePath = '/Users/'+userName+'/';
-	var userReference = firebase.database().ref(referencePath);
-	userReference.update({Name: name, Age: age}, 
-				 function(error) {
-					if (error) {
-						res.send("Data could not be updated." + error);
-					} 
-					else {
-						res.send("Data updated successfully.");
-					}
-			    });
+	var id = req.body.id;
+	var referencePath = '/Plats/'+id+'/';
+	
+	db.update_data(referencePath, req.body, res);
 });
 
-//Delete an instance
-app.delete('/', function (req, res) {
+app.delete('/plat', function (req, res) {
 
    console.log("HTTP DELETE Request");
-   //todo
+   
+	var id = req.body.id;
+
+	var referencePath = '/Plats/'+id+'/';
+	
+	db.delete_data(referencePath, res);
+});
+
+app.get('/menu', function (req, res) {
+
+	console.log("HTTP Get Request");
+	
+	if(req.body.id){
+		console.log("GET ONE");
+		var id = req.body.id;
+		referencePath = "/Menu/"+id+"/";
+	} else {
+		console.log("GET ALL");
+		var referencePath = "/Menu/";
+	}
+	
+	db.get_data(referencePath, res);
+});
+
+app.put('/menu', function (req, res) {
+
+	console.log("HTTP Put Request");
+
+	var id = req.body.id;
+	var referencePath = '/Menu/'+id+'/';
+	
+	db.add_data(referencePath, req.body, res);
+});
+
+app.post('/menu', function (req, res) {
+
+	console.log("HTTP POST Request");
+	
+	var id = req.body.id;
+	var referencePath = '/Menu/'+id+'/';
+	
+	db.update_data(referencePath, req.body, res);
+});
+
+app.delete('/menu', function (req, res) {
+
+   console.log("HTTP DELETE Request");
+   
+	var id = req.body.id;
+
+	var referencePath = '/Menu/'+id+'/';
+	
+	db.delete_data(referencePath, res);
+});
+
+app.get('/user', function (req, res) {
+
+	console.log("HTTP Get Request");
+	
+	if(req.body.id){
+		console.log("GET ONE");
+		var id = req.body.id;
+		referencePath = "/Users/"+id+"/";
+	} else {
+		console.log("GET ALL");
+		var referencePath = "/Users/";
+	}
+	
+	db.get_data(referencePath, res);
+});
+
+app.put('/user', function (req, res) {
+
+	console.log("HTTP Put Request");
+
+	var id = req.body.id;
+	var referencePath = '/Users/'+id+'/';
+	
+	db.add_data(referencePath, req.body, res);
+});
+
+app.post('/user', function (req, res) {
+
+	console.log("HTTP POST Request");
+	
+	var id = req.body.id;
+	var referencePath = '/Users/'+id+'/';
+	
+	db.update_data(referencePath, req.body, res);
+});
+
+app.delete('/user', function (req, res) {
+
+   console.log("HTTP DELETE Request");
+   
+	var id = req.body.id;
+
+	var referencePath = '/Users/'+id+'/';
+	
+	db.delete_data(referencePath, res);
 });
 
 var server = app.listen(8080, function () {
@@ -91,6 +152,6 @@ var server = app.listen(8080, function () {
    var host = server.address().address;
    var port = server.address().port;
    
-   console.log("Example app listening at http://%s:%s", host, port);
+   console.log("Server listening at http://%s:%s", host, port);
 });
 
